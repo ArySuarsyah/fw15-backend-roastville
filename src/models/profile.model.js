@@ -1,21 +1,17 @@
-import db from '../helpers/db.helper'
+import db from "../helpers/db.helper.js"
 
-const table = "profile"
-
-exports.insert = async function (data) {
+export const InsertProfile = async function (data) {
   const query = `
-  INSERT INTO ${table} ("userId", "picture", "fullName", "phoneNumber", "gender", "profession", "nationality", "birthDate") 
-  VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *
+  INSERT INTO "profile" ("userId", "firstName", "lastName", "address", "gender", "birthDate") 
+  VALUES ($1, $2, $3, $4, $5, $6) RETURNING *
   `
 
   const values = [
     data.userId,
-    data.picture,
-    data.fullName,
-    data.phoneNumber,
+    data.firstName,
+    data.lastName,
+    data.address,
     data.gender,
-    data.profession,
-    data.nationality,
     data.birthDate,
   ]
   const { rows } = await db.query(query, values)
