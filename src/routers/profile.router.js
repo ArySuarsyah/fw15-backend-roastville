@@ -1,8 +1,8 @@
 import { Router } from "express"
-import ProfileController from "../controllers/profile.controller.js"
+import { getProfile } from "../controllers/profile.controller.js"
 
 const ProfileRouter = Router()
 
-ProfileRouter.get("/", ProfileController)
+ProfileRouter.get("/", getProfile)
 
 export default ProfileRouter

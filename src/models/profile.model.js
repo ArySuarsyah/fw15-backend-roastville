@@ -1,8 +1,8 @@
-import db from '../helpers/db.helper'
+import db from '../helpers/db.helper.js'
 
 const table = "profile"
 
-exports.insert = async function (data) {
+export async function insert(data) {
   const query = `
   INSERT INTO ${table} ("userId", "picture", "fullName", "phoneNumber", "gender", "profession", "nationality", "birthDate") 
   VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *
@@ -23,7 +23,7 @@ exports.insert = async function (data) {
 }
 
 
-exports.findAll = async function (page, limit, search, sort, soryBy) {
+export async function findAll(page, limit, search, sort, soryBy) {
   page = parseInt(page) || 1
   limit = parseInt(limit) || 5
   search = search || ""
@@ -43,7 +43,7 @@ exports.findAll = async function (page, limit, search, sort, soryBy) {
     return rows
 }
 
-exports.findOne = async function(id){
+export async function findOne(id){
   const query = `
   SELECT * FROM "${table}"
   WHERE "id"=$1
