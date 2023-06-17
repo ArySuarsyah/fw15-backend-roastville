@@ -2,6 +2,16 @@ import db from "../helpers/db.helper.js"
 
 const table = "forgot_request"
 
+export const findOneByEmail = async function (email) {
+  const query = `
+  SELECT * FROM "${table}" WHERE "email"=$1
+  `
+
+  const values = [email]
+  const { rows } = await db.query(query, values)
+  return rows[0]
+}
+
 export const insertForgotReq = async function (data) {
   const query = `
     INSERT INTO "${table}" ("email") 
