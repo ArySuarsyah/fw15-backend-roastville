@@ -4,7 +4,7 @@
   "description": "roastville backend",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -36,5 +36,6 @@
     "eslint": "^8.42.0",
     "nodemon": "^2.0.22",
     "prettier": "^2.8.8"
-  }
+  },
+  "type": "module"
 }
