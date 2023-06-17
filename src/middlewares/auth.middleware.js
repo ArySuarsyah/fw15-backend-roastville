@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken"
-import errorHandler from "../helpers/errorhandler.js"
+import errorHandler from "../helpers/error-handler.js"
 
 const APP_SECRET = process.env.APP_SECRET
 
