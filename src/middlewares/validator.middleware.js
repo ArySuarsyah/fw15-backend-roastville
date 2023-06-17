@@ -19,14 +19,9 @@ const checkCode = body("code").isInt().withMessage("Code is invalid")
 
 const rules = {
   authLogin: [emailFormat, checkPassword],
-  authRegister: [
-    emailFormat,
-    checkPassword,
-    checkDuplicateEmail,
-    checkDuplicatePass,
-  ],
+  authRegister: [emailFormat, checkPassword, checkDuplicateEmail],
   authForgot: [emailFormat],
-  authReset: [checkCode, emailFormat, checkPassword],
+  authReset: [emailFormat],
 }
 
 const validator = (req, res, next) => {

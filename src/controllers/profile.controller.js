@@ -1,5 +1,5 @@
-import errorHandler from "../helpers/errorhandler.js"
-import {findAll} from "../models/profile.model.js"
+import errorHandler from "../helpers/error-handler.js"
+import { findAll } from "../models/profile.model.js"
 
 export const getProfile = async function (req, res) {
   try {
@@ -8,15 +8,14 @@ export const getProfile = async function (req, res) {
       req.query.limit,
       req.query.search,
       req.query.sort,
-      req.query.soryBy)
+      req.query.sortBy
+    )
     return res.json({
       success: true,
       message: "Get profile successfully",
-      results: data
+      results: data,
     })
-
   } catch (err) {
     return errorHandler(res, err)
   }
 }
-

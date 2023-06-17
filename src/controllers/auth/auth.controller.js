@@ -3,16 +3,14 @@ import {
   insertUsers,
   updateUsers,
 } from "../../models/users.model.js"
-import { InsertProfile } from "../../models/profile.model.js"
 import {
-  findOneByCodeAndEmail,
-  findOneByCode,
-  InsertForgotRequest,
-  destroyForgot,
-} from "../../models/forgotrequest.model.js"
+  destroyForgotReq,
+  insertForgotReq,
+} from "../../models/forgot-request.model.js"
+import { InsertProfile } from "../../models/profile.model.js"
 import argon from "argon2"
 import jwt from "jsonwebtoken"
-import errorHandler from "../../helpers/errorhandler.js"
+import errorHandler from "../../helpers/error-handler.js"
 
 export const Login = async function (req, res) {
   try {
@@ -67,19 +65,13 @@ export const ForgotPassword = async function (req, res) {
   try {
     const { email } = req.body
     const user = await findOneUsersByEmail(email)
+    const forgot = await insertForgotReq(email)
     if (!user) {
       throw Error("auth_no_user")
     }
 
-    const randomNumber = Math.random()
-    const rounded = Math.round(randomNumber * 100000)
-    const padded = String(rounded).padEnd(6, "0")
-    const forgot = await InsertForgotRequest({
-      email: user.email,
-      code: padded,
-    })
     if (!forgot) {
-      throw Error("auth_forgot_password_fail")
+      throw Error("auth_forgot_password_failed")
     }
     return res.json({
       success: true,
@@ -92,26 +84,21 @@ export const ForgotPassword = async function (req, res) {
 
 export const ResetPassword = async function (req, res) {
   try {
-    const { code, email, password } = req.body
-    const find = await findOneByCodeAndEmail(email, code)
-    const checkCode = await findOneByCode(code)
+    const { email, newPassword, confirmPassword } = req.body
 
-    if (!checkCode) {
-      throw Error("auth_code_invalid")
+    if (newPassword !== confirmPassword) {
+      throw Error("auth_password_not_match")
     }
 
-    if (!find) {
-      throw Error("auth_no_forgot_request")
-    }
     const selectedUser = await findOneUsersByEmail(email)
     const data = {
-      password: await argon.hash(password),
+      password: await argon.hash(newPassword),
     }
     const user = await updateUsers(selectedUser.id, data)
     if (!user) {
       throw Error("auth_no_forgot_request")
     }
-    await destroyForgot(find.id)
+    await destroyForgotReq(email)
     return res.json({
       success: true,
       message: "Reset password successfully",
