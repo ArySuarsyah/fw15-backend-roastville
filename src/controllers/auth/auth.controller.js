@@ -5,6 +5,7 @@ import {
 } from "../../models/users.model.js"
 import {
   destroyForgotReq,
+  findOneByEmail,
   insertForgotReq,
 } from "../../models/forgot-request.model.js"
 import { InsertProfile } from "../../models/profile.model.js"
@@ -85,9 +86,14 @@ export const ForgotPassword = async function (req, res) {
 export const ResetPassword = async function (req, res) {
   try {
     const { email, newPassword, confirmPassword } = req.body
+    const checkForgot = await findOneByEmail(email)
 
     if (newPassword !== confirmPassword) {
       throw Error("auth_password_not_match")
+    }
+
+    if (!checkForgot) {
+      throw Error("auth_no_forgot_request")
     }
 
     const selectedUser = await findOneUsersByEmail(email)
