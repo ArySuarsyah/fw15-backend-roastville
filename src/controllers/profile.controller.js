@@ -1,7 +1,7 @@
 import errorHandler from "../helpers/errorhandler.js"
 import {findAll} from "../models/profile.model.js"
 
-export default async function getProfile(req, res) {
+export const getProfile = async function (req, res) {
   try {
     const data = await findAll(
       req.query.page,
@@ -19,3 +19,4 @@ export default async function getProfile(req, res) {
     return errorHandler(res, err)
   }
 }
+

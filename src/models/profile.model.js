@@ -1,25 +1,27 @@
-import db from "../helpers/db.helper.js"
+import db from '../helpers/db.helper.js'
 
-export const InsertProfile = async function (data) {
+const table = "profile"
+
+export async function insert(data) {
   const query = `
-  INSERT INTO "profile" ("userId", "firstName", "lastName", "address", "gender", "birthDate") 
-  VALUES ($1, $2, $3, $4, $5, $6) RETURNING *
+  INSERT INTO "profile" ("firstName", "lastName", "displayName", "address", "gender", "birthDate", "userId") 
+  VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *
   `
-
+  
   const values = [
-    data.userId,
     data.firstName,
     data.lastName,
+    data.displayName,
     data.address,
     data.gender,
     data.birthDate,
+    data.userId,
   ]
   const { rows } = await db.query(query, values)
   return rows[0]
 }
 
-
-exports.findAll = async function (page, limit, search, sort, soryBy) {
+export async function findAll(page, limit, search, sort, soryBy) {
   page = parseInt(page) || 1
   limit = parseInt(limit) || 5
   search = search || ""
@@ -39,7 +41,7 @@ exports.findAll = async function (page, limit, search, sort, soryBy) {
     return rows
 }
 
-exports.findOne = async function(id){
+export async function findOne(id){
   const query = `
   SELECT * FROM "${table}"
   WHERE "id"=$1
