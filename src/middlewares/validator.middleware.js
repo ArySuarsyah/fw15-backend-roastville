@@ -1,4 +1,4 @@
-import { body, param, query, validationResult } from "express-validator"
+import { body, validationResult } from "express-validator"
 import { findOneUsersByEmail } from "../models/users.model.js"
 
 const emailFormat = body("email").isEmail().withMessage("Email is invalid")
@@ -20,9 +20,13 @@ const checkAuthPassword = body("newPassword")
   .isStrongPassword()
   .withMessage("Password is invalid")
 
+const isPhone = body("phoneNumber")
+  .matches(/^(\+62|62)?[\s-]?0?8[1-9]{1}\d{1}[\s-]?\d{4}[\s-]?\d{2,5}$/)
+  .withMessage("Invalid phone number")
+
 const rules = {
   authLogin: [emailFormat, checkPassword],
-  authRegister: [emailFormat, checkPassword, checkDuplicateEmail],
+  authRegister: [emailFormat, checkPassword, checkDuplicateEmail, isPhone],
   authForgot: [emailFormat],
   authReset: [emailFormat, checkAuthPassword, checkDuplicatePass],
 }
