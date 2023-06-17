@@ -32,12 +32,12 @@
 							"urlencoded": [
 								{
 									"key": "email",
-									"value": "",
+									"value": "admin@mail.com",
 									"type": "default"
 								},
 								{
 									"key": "password",
-									"value": "",
+									"value": "Admin123!",
 									"type": "default"
 								}
 							]
@@ -84,7 +84,7 @@
 								},
 								{
 									"key": "password",
-									"value": "1234",
+									"value": "Admin123!",
 									"type": "default"
 								},
 								{
@@ -128,7 +128,7 @@
 							"urlencoded": [
 								{
 									"key": "email",
-									"value": "",
+									"value": "admin@mail.com",
 									"type": "default"
 								}
 							]
@@ -167,17 +167,17 @@
 							"urlencoded": [
 								{
 									"key": "email",
-									"value": "",
+									"value": "admin@mail.com",
 									"type": "default"
 								},
 								{
 									"key": "newPassword",
-									"value": "",
+									"value": "Admin123!",
 									"type": "default"
 								},
 								{
 									"key": "confirmPassword",
-									"value": "",
+									"value": "Admin123!",
 									"type": "default"
 								}
 							]
