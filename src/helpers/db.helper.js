@@ -1,10 +1,12 @@
-import { Pool } from "pg"
+import pkg from "pg"
+const { Pool } = pkg
 
 const db = new Pool({
-  connectionString: process.env.DATABASE,
+  connectionString:
+    "postgres://postgres:1@127.0.0.1:5432/postgres?schema=public",
 })
 
-async function connectToDatabase() {
+export const connectToDatabase = async function () {
   try {
     await db.connect()
     console.log("Database connected")
@@ -12,7 +14,5 @@ async function connectToDatabase() {
     console.log("Failed to connect")
   }
 }
-
-connectToDatabase()
 
 export default db

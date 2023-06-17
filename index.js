@@ -2,6 +2,7 @@ import express from "express"
 import dotenv from "dotenv"
 import cors from "cors"
 import routes from "./src/routers/index.js"
+import { connectToDatabase } from "./src/helpers/db.helper.js"
 
 dotenv.config({
   path: ".env",
@@ -21,3 +22,4 @@ app.use("/", routes)
 app.listen(PORT, () => {
   console.log(`App is listening on ${PORT}`)
 })
+connectToDatabase()
