@@ -19,7 +19,7 @@ export const Insert = async function (req, res) {
     const product = await ProductModel.Insert(req.body)
     return res.json({
       success: true,
-      message: "Get all products successfully",
+      message: "Add products successfully",
       results: product,
     })
   } catch (err) {
