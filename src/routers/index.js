@@ -1,8 +1,10 @@
 import { Router } from "express"
 import ProfileRouter from "./profile.router.js"
+import authRouter from "./auth/auth.router.js"
 
 const router = Router()
 
+router.use("/auth", authRouter)
 router.use("/profile", ProfileRouter)
 
 router.get("/", (req, res) => {
