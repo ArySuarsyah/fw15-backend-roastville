@@ -1,11 +1,12 @@
 import { Router } from "express"
 import ProfileRouter from "./profile.router.js"
 import authRouter from "./auth/auth.router.js"
+import authMiddleware from "../middlewares/auth.middleware.js"
 
 const router = Router()
 
 router.use("/auth", authRouter)
-router.use("/profile", ProfileRouter)
+router.use("/profile",authMiddleware, ProfileRouter)
 
 router.get("/", (req, res) => {
   return res.status(200).json({

@@ -4,39 +4,39 @@ const table = "profile"
 
 export async function InsertProfile(data) {
   const query = `
-  INSERT INTO "profile" ("firstName", "lastName", "displayName", "address", "gender", "birthDate", "userId") 
-  VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *
+  INSERT INTO "profile" ("picture","firstName", "lastName", "displayName", "address", "gender", "birthDate", "userId") 
+  VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *
   `
 
   const values = [
+    data.picture,
     data.firstName,
     data.lastName,
     data.displayName,
     data.address,
     data.gender,
     data.birthDate,
-    data.userId,
+    data.userId
   ]
   const { rows } = await db.query(query, values)
   return rows[0]
 }
 
-export async function findAll(page, limit, search, sort, soryBy) {
+export async function findAll(page, limit, search, sort, sortBy) {
   page = parseInt(page) || 1
   limit = parseInt(limit) || 5
   search = search || ""
   sort = sort || "id"
-  soryBy = soryBy || "ASC"
+  sortBy = sortBy || "ASC"
   const offset = (page - 1) * limit
 
   const query = `
     SELECT * FROM "${table}" 
-    WHERE "displayName" LIKE $3 
     ORDER BY "${sort}" ${sortBy} 
     LIMIT $1 OFFSET $2
   `
 
-  const values = [limit, offset, `%${search}%`]
+  const values = [limit, offset ]
   const { rows } = await db.query(query, values)
   return rows
 }
@@ -50,3 +50,66 @@ export async function findOne(id) {
   const { rows } = await db.query(query, values)
   return rows[0]
 }
+
+
+export async function findOneByUserId(userId){
+  
+  const query = 
+  `
+  SELECT 
+  "u"."id" AS "userId",
+  "p"."picture",
+  "p"."firstName",
+  "p"."lastName",
+  "p"."displayName",
+  "u"."email",
+  "u"."phoneNumber",
+  "p"."address",
+  "p"."gender",
+  "p"."birthDate",
+  "p"."createdAt",
+  "p"."updatedAt"
+  FROM "${table}" "p"
+  JOIN "users" "u" ON "u"."id" = "p"."userId"
+  WHERE "p"."userId"= $1
+  `
+
+  const values = [userId]
+    const {rows} = await db.query(query, values)
+    return rows[0]
+}
+
+
+export async function updateByUserId(userId, data) {
+  const query =
+    `
+    UPDATE ${table} AS p
+    SET
+    "picture" = COALESCE(NULLIF($2, ''), "picture"),
+    "displayName" = COALESCE(NULLIF($3, ''), "displayName"),
+    "firstName" = COALESCE(NULLIF($4, ''), "firstName"),
+    "lastName" = COALESCE(NULLIF($5, ''), "lastName"),
+    "gender" = COALESCE(NULLIF(CASE WHEN $6 = '' THEN NULL ELSE $6::BOOLEAN END, "gender")),
+    "birthDate" = COALESCE(NULLIF(CASE WHEN $7 = '' THEN NULL ELSE $7::DATE END, "birthDate")),
+    "address" = COALESCE(NULLIF($8, ''), "address")
+    FROM "users" AS u
+    WHERE p."userId" = $1 AND u."id" = p."userId"
+    RETURNING p.*, u."email", u."phoneNumber"
+    `
+
+  const values = [
+    userId,
+    data.picture,
+    data.displayName,
+    data.firstName,
+    data.lastName,
+    data.gender,
+    data.birthDate,
+    data.address
+  ];
+
+  const { rows } = await db.query(query, values);
+  return rows[0];
+}
+
+
