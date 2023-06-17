@@ -1,6 +1,6 @@
-import db from "../helpers/db.helper"
+import db from "../helpers/db.helper.js"
 
-export const findAll = async function (page, limit, search, sort, sortBy) {
+export const findAllUsers = async function (page, limit, search, sort, sortBy) {
   page = parseInt(page) || 1
   limit = parseInt(limit) || 5
   search = search || ""
@@ -18,7 +18,7 @@ export const findAll = async function (page, limit, search, sort, sortBy) {
   return rows
 }
 
-export const findOne = async function (id) {
+export const findOneUsers = async function (id) {
   const query = `
     SELECT * FROM "users" WHERE id=$1
     `
@@ -28,7 +28,7 @@ export const findOne = async function (id) {
   return rows[0]
 }
 
-export const findOneByEmail = async function (email) {
+export const findOneUsersByEmail = async function (email) {
   const query = `
     SELECT * FROM "users" WHERE email=$1
     `
@@ -38,7 +38,7 @@ export const findOneByEmail = async function (email) {
   return rows[0]
 }
 
-export const insert = async function (data) {
+export const insertUsers = async function (data) {
   const query = `
     INSERT INTO "users" ("email", "password", "phoneNumber", "roleId") 
     VALUES ($1, $2, $3, $4) RETURNING *
@@ -49,14 +49,14 @@ export const insert = async function (data) {
   return rows[0]
 }
 
-export const update = async function (id, data) {
+export const updateUsers = async function (id, data) {
   const query = `
     UPDATE "users" 
     SET 
-    "email"=COALESCE(NULLIF($2, ''), email), 
-    "password"=COALESCE(NULLIF($3, ''), password),
-    "phoneNumber"=COALESCE(NULLIF($4, ''), phoneNumber)
-    "roleId"=COALESCE(NULLIF($4, ''), roleId)
+    "email"=COALESCE(NULLIF($2, ''), "email"), 
+    "password"=COALESCE(NULLIF($3, ''), "password"),
+    "phoneNumber"=COALESCE(NULLIF($4, ''), "phoneNumber"),
+    "roleId"=COALESCE(NULLIF($5::INTEGER, NULL), "roleId")
     WHERE "id"=$1
     RETURNING *
     `
@@ -66,7 +66,7 @@ export const update = async function (id, data) {
   return rows[0]
 }
 
-export const destroy = async function (id) {
+export const destroyUsers = async function (id) {
   const query = `
     DELETE FROM "users" 
     WHERE "id"=$1

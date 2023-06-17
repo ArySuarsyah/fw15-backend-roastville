@@ -4,24 +4,22 @@ const table = "profile"
 
 export async function insert(data) {
   const query = `
-  INSERT INTO ${table} ("userId", "picture", "fullName", "phoneNumber", "gender", "profession", "nationality", "birthDate") 
-  VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *
+  INSERT INTO "profile" ("firstName", "lastName", "displayName", "address", "gender", "birthDate", "userId") 
+  VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *
   `
-
+  
   const values = [
-    data.userId,
-    data.picture,
-    data.fullName,
-    data.phoneNumber,
+    data.firstName,
+    data.lastName,
+    data.displayName,
+    data.address,
     data.gender,
-    data.profession,
-    data.nationality,
     data.birthDate,
+    data.userId,
   ]
   const { rows } = await db.query(query, values)
   return rows[0]
 }
-
 
 export async function findAll(page, limit, search, sort, soryBy) {
   page = parseInt(page) || 1

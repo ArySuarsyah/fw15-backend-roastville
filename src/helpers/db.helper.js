@@ -1,9 +1,13 @@
 import pkg from "pg"
+import dotenv from "dotenv"
 const { Pool } = pkg
 
+dotenv.config({
+  path: ".env",
+})
+
 const db = new Pool({
-  connectionString:
-    "postgres://postgres:1@127.0.0.1:5432/postgres?schema=public",
+  connectionString: process.env.DATABASE,
 })
 
 export const connectToDatabase = async function () {
