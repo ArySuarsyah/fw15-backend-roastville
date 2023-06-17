@@ -13,15 +13,14 @@ const checkDuplicateEmail = body("email").custom(async (value) => {
   }
 })
 const checkDuplicatePass = body("confirmPassword").custom((value, { req }) => {
-  return value === req.body.password
+  return value === req.body.newPassword
 })
-const checkCode = body("code").isInt().withMessage("Code is invalid")
 
 const rules = {
   authLogin: [emailFormat, checkPassword],
   authRegister: [emailFormat, checkPassword, checkDuplicateEmail],
   authForgot: [emailFormat],
-  authReset: [emailFormat],
+  authReset: [emailFormat, checkDuplicatePass],
 }
 
 const validator = (req, res, next) => {
