@@ -1,13 +1,20 @@
 import { Router } from "express"
-import { getProfile, getProfileByUser, findOneProfile, updateProfile } from "../controllers/profile.controller.js"
+import * as ProfileController from "../controllers/profile.controller.js"
 import uploadMiddleware from "../middlewares/upload.middleware.js"
 
 const ProfileRouter = Router()
 
-ProfileRouter.get("/user", getProfileByUser)
-ProfileRouter.get("/:id", findOneProfile)
-ProfileRouter.get("/",uploadMiddleware("picture"), getProfile)
-ProfileRouter.patch("/", uploadMiddleware("picture"), updateProfile )
-
+ProfileRouter.get("/user", ProfileController.getProfileByUser)
+ProfileRouter.get("/:id", ProfileController.findOneProfile)
+ProfileRouter.get(
+  "/",
+  uploadMiddleware("picture"),
+  ProfileController.getProfile
+)
+ProfileRouter.patch(
+  "/",
+  uploadMiddleware("picture"),
+  ProfileController.updateProfile
+)
 
 export default ProfileRouter
