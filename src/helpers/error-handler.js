@@ -34,6 +34,12 @@ export default function errorHandler(res, err) {
       success: false,
       message: "auth_no_forgot_request",
     })
+  }
+  if (err?.message?.includes("fileformat_error")) {
+    return res.status(400).json({
+      success: false,
+      message: "Error: File format is not valid",
+    })
   } else {
     console.log(err)
     return res.status(500).json({
