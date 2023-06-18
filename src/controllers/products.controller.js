@@ -14,9 +14,13 @@ export const getAll = async function (req, res) {
   }
 }
 
-export const Insert = async function (req, res) {
+export const createProduct = async function (req, res) {
   try {
-    const product = await ProductModel.Insert(req.body)
+    const data = { ...req.body }
+    if (req.file) {
+      data.picture = req.file.filename
+    }
+    const product = await ProductModel.insert(data)
     return res.json({
       success: true,
       message: "Add products successfully",
