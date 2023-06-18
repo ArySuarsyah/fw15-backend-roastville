@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 8080
 
 app.use(
   cors({
-    origin: process.env.CORS,
+    origin: "*",
     optionsSuccessStatus: 200,
   })
 )
