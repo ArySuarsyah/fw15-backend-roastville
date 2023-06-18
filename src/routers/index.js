@@ -1,14 +1,16 @@
 import { Router } from "express"
 import authRouter from "./auth/auth.router.js"
-import ProfileRouter from "./profile.router.js"
-import ProductRouter from "../routers/products.router.js"
+import profileRouter from "./profile.router.js"
+import productRouter from "../routers/products.router.js"
+import transactionRouter from "../routers/transactions.router.js"
 import authMiddleware from "../middlewares/auth.middleware.js"
 
 const router = Router()
 
 router.use("/auth", authRouter)
-router.use("/profile", authMiddleware, ProfileRouter)
-router.use("/products", ProductRouter)
+router.use("/profile", authMiddleware, profileRouter)
+router.use("/products", productRouter)
+router.use("/transactions", transactionRouter)
 
 router.get("/", (req, res) => {
   return res.status(200).json({
