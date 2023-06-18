@@ -1,4 +1,4 @@
-import * as ProductModel from "../models/product.model.js"
+import * as ProductModel from "../models/products.model.js"
 import errorHandler from "../helpers/error-handler.js"
 
 export const getAll = async function (req, res) {
