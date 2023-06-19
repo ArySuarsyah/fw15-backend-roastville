@@ -20,7 +20,7 @@ export const findAllUsers = async function (page, limit, search, sort, sortBy) {
 
 export const findOneUsers = async function (id) {
   const query = `
-    SELECT * FROM "users" WHERE id=$1
+    SELECT "roleId" FROM "users" WHERE id=$1
     `
 
   const values = [id]
