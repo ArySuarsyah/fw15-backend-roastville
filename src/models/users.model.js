@@ -28,6 +28,16 @@ export const findOneUsers = async function (id) {
   return rows[0]
 }
 
+export const makeAdmin = async function (id) {
+  const query = `
+  UPDATE "users" SET "roleId" = 1 WHERE id = id;
+  `
+
+  const values = [id]
+  const { rows } = await db.query(query, values)
+  return rows[0]
+}
+
 export const findOneUsersByEmail = async function (email) {
   const query = `
     SELECT * FROM "users" WHERE email=$1
