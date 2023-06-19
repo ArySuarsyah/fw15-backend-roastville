@@ -20,3 +20,17 @@ export async function getRoleId(req, res) {
     return errorHandler(res, err)
   }
 }
+
+export async function makeAdmin(req, res) {
+  try {
+    const { id } = req.user
+    const data = await UsersModel.makeAdmin(id)
+    return res.json({
+      success: true,
+      message: "Make admin successfully",
+      results: data,
+    })
+  } catch (err) {
+    return errorHandler(res, err)
+  }
+}
