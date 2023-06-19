@@ -23,8 +23,23 @@ export default function errorHandler(res, err) {
       message: "auth_forgot_password_fail",
     })
   }
+
+  if (err?.message?.includes("auth_forgot_password_duplicate")) {
+    return res.status(409).json({
+      success: false,
+      message: "email already send request",
+    })
+  }
+
+  if (err?.message?.includes("Unauthorized")) {
+    return res.status(409).json({
+      success: false,
+      message: "Unauthorized",
+    })
+  }
+
   if (err?.message?.includes("auth_code_invalid")) {
-    return res.status(404).json({
+    return res.status(400).json({
       success: false,
       message: "auth_code_invalid",
     })
@@ -33,6 +48,24 @@ export default function errorHandler(res, err) {
     return res.status(404).json({
       success: false,
       message: "auth_no_forgot_request",
+    })
+  }
+  if (err?.message?.includes("forgot_request_email_key")) {
+    return res.status(404).json({
+      success: false,
+      message: "email has been request reset password",
+    })
+  }
+  if (err?.message?.includes("voucher_invalid")) {
+    return res.status(400).json({
+      success: false,
+      message: "Error: Voucher is invalid",
+    })
+  }
+  if (err?.message?.includes("voucher_expired")) {
+    return res.status(400).json({
+      success: false,
+      message: "Error: Voucher is expired",
     })
   }
   if (err?.message?.includes("fileformat_error")) {

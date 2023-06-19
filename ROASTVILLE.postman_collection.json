@@ -323,6 +323,171 @@
 			]
 		},
 		{
+			"name": "PRODUCTS",
+			"item": [
+				{
+					"name": "GET ALL PRODUCT",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/products",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE PRODUCT",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Americano",
+									"type": "default"
+								},
+								{
+									"key": "picture",
+									"value": "",
+									"type": "default",
+									"disabled": true
+								},
+								{
+									"key": "description",
+									"value": "Order this drink and you'll get a shot of espresso diluted with hot water.",
+									"type": "default"
+								},
+								{
+									"key": "variant",
+									"value": "[{\"code\": \"XL\", \"name\": \"Extra Large\", \"price\": 55000, \"quantity\": 5}]",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/products",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TRANSACTIONS",
+			"item": [
+				{
+					"name": "GET ALL TRANSACTION",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/transactions",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"transactions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE TRANSACTION",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "voucher",
+									"value": "FNPR15RG",
+									"type": "default"
+								},
+								{
+									"key": "itemId[]",
+									"value": "1",
+									"type": "default"
+								},
+								{
+									"key": "variant[]",
+									"value": "R",
+									"type": "default"
+								},
+								{
+									"key": "quantity[]",
+									"value": "1",
+									"type": "default"
+								},
+								{
+									"key": "itemId[]",
+									"value": "1",
+									"type": "default",
+									"disabled": true
+								},
+								{
+									"key": "variant[]",
+									"value": "XL",
+									"type": "default",
+									"disabled": true
+								},
+								{
+									"key": "quantity[]",
+									"value": "1",
+									"type": "default",
+									"disabled": true
+								},
+								{
+									"key": "itemId[]",
+									"value": "1",
+									"type": "default",
+									"disabled": true
+								},
+								{
+									"key": "variant[]",
+									"value": "L",
+									"type": "default",
+									"disabled": true
+								},
+								{
+									"key": "quantity[]",
+									"value": "3",
+									"type": "default",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/transactions",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"transactions"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "TEST CONNECTION",
 			"request": {
 				"method": "GET",

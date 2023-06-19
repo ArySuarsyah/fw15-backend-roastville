@@ -10,13 +10,12 @@ const db = new Pool({
   connectionString: process.env.DATABASE,
 })
 
-export const connectToDatabase = async function () {
-  try {
-    await db.connect()
-    console.log("Database connected")
-  } catch (error) {
-    console.log("Failed to connect")
-  }
-}
+db.connect()
+  .then(() => {
+    console.log("Database Connected")
+  })
+  .catch((err) => {
+    console.log(err)
+  })
 
 export default db

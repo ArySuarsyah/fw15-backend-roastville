@@ -12,6 +12,32 @@ export const findAllProduct = async function () {
   return rows
 }
 
+export const findOne = async (id) => {
+  const query = `
+  SELECT * FROM ${table} WHERE id=$1
+  `
+  const values = [id]
+  const { rows } = await db.query(query, values)
+  return rows[0]
+}
+
+export const findOneByIdAndVariant = async (id, code) => {
+  const query = `
+  SELECT 
+  "id",
+  "name",
+  "picture",
+  "description",
+  "sku"
+  FROM ${table}
+  CROSS JOIN jsonb_array_elements("variant") AS "sku"
+  WHERE "sku"->> 'code' = ANY($2) AND "id" = ANY($1);
+  `
+  const values = [id, code]
+  const { rows } = await db.query(query, values)
+  return rows
+}
+
 export const insert = async function (data) {
   const query = `
   INSERT INTO ${table} ("picture", "name", "description", "variant")
@@ -24,15 +50,28 @@ export const insert = async function (data) {
 }
 
 export async function updateDetailProduct(id, data) {
-  const query = 
-  `
+  const query = `
   UPDATE "${table}" SET 
   "name" = COALESCE(NULLIF($2, ''), "name"),
   "description" = COALESCE(NULLIF ($3, ''), "description")
   WHERE "id" = $1 RETURNING *
   `
-
   const values = [id, data.name, data.description]
+  const { rows } = await db.query(query, values)
+  return rows[0]
+}
+
+export const updateQty = async (id, code, qty) => {
+  const query = `
+  WITH product AS (
+    SELECT ('{'||index-1||',quantity}')::TEXT[] AS path
+    FROM ${table}, jsonb_array_elements(variant) WITH ordinality arr(sku, index)
+    WHERE sku->> 'code' = $2 AND id = $1
+  ) UPDATE ${table} SET variant = jsonb_set(variant, product.path, '${qty}', false) FROM product
+  WHERE id = $1
+  RETURNING *
+  `
+  const values = [id, code]
   const { rows } = await db.query(query, values)
   return rows[0]
 }
