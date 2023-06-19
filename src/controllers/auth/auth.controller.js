@@ -58,10 +58,18 @@ export const ForgotPassword = async function (req, res) {
   try {
     const { email } = req.body
     const user = await UsersModel.findOneUsersByEmail(email)
-    const forgot = await ForgotRequest.insertForgotReq(email)
+    
+
     if (!user) {
       throw Error("auth_no_user")
     }
+
+    const findForgotReset =  await ForgotRequest.findOneByEmail(email)
+    if(findForgotReset){
+      throw Error("auth_forgot_password_duplicate")
+    }
+
+    const forgot = await ForgotRequest.insertForgotReq(email)
 
     if (!forgot) {
       throw Error("auth_forgot_password_failed")
