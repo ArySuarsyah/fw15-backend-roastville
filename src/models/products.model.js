@@ -49,6 +49,18 @@ export const insert = async function (data) {
   return rows[0]
 }
 
+export async function updateDetailProduct(id, data) {
+  const query = `
+  UPDATE "${table}" SET 
+  "name" = COALESCE(NULLIF($2, ''), "name"),
+  "description" = COALESCE(NULLIF ($3, ''), "description")
+  WHERE "id" = $1 RETURNING *
+  `
+  const values = [id, data.name, data.description]
+  const { rows } = await db.query(query, values)
+  return rows[0]
+}
+
 export const updateQty = async (id, code, qty) => {
   const query = `
   WITH product AS (

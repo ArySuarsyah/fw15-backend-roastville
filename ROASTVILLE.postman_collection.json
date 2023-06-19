@@ -416,6 +416,11 @@
 							"mode": "urlencoded",
 							"urlencoded": [
 								{
+									"key": "voucher",
+									"value": "FNPR15RG",
+									"type": "default"
+								},
+								{
 									"key": "itemId[]",
 									"value": "1",
 									"type": "default"
@@ -427,7 +432,7 @@
 								},
 								{
 									"key": "quantity[]",
-									"value": "3",
+									"value": "1",
 									"type": "default"
 								},
 								{
@@ -445,6 +450,24 @@
 								{
 									"key": "quantity[]",
 									"value": "1",
+									"type": "default",
+									"disabled": true
+								},
+								{
+									"key": "itemId[]",
+									"value": "1",
+									"type": "default",
+									"disabled": true
+								},
+								{
+									"key": "variant[]",
+									"value": "L",
+									"type": "default",
+									"disabled": true
+								},
+								{
+									"key": "quantity[]",
+									"value": "3",
 									"type": "default",
 									"disabled": true
 								}

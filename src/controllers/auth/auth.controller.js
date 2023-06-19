@@ -31,9 +31,11 @@ export const Login = async function (req, res) {
 export const Register = async function (req, res) {
   try {
     const password = req.body.password
+    const customer = 2
     const hashedPassword = await argon.hash(password)
     const data = {
       ...req.body,
+      roleId: customer,
       password: hashedPassword,
     }
     const user = await UsersModel.insertUsers(data)
@@ -43,7 +45,7 @@ export const Register = async function (req, res) {
     }
 
     await ProfileModel.InsertProfile(profileData)
-    const token = jwt.sign({ id: user.id }, process.env.APP_SECRET)
+    const token = jwt.sign({ id: user.id, customer }, process.env.APP_SECRET)
     return res.json({
       success: true,
       message: "Register success",
@@ -58,14 +60,13 @@ export const ForgotPassword = async function (req, res) {
   try {
     const { email } = req.body
     const user = await UsersModel.findOneUsersByEmail(email)
-    
 
     if (!user) {
       throw Error("auth_no_user")
     }
 
-    const findForgotReset =  await ForgotRequest.findOneByEmail(email)
-    if(findForgotReset){
+    const findForgotReset = await ForgotRequest.findOneByEmail(email)
+    if (findForgotReset) {
       throw Error("auth_forgot_password_duplicate")
     }
 
