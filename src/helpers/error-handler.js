@@ -32,7 +32,7 @@ export default function errorHandler(res, err) {
   }
 
   if (err?.message?.includes("auth_code_invalid")) {
-    return res.status(404).json({
+    return res.status(400).json({
       success: false,
       message: "auth_code_invalid",
     })
@@ -47,6 +47,18 @@ export default function errorHandler(res, err) {
     return res.status(404).json({
       success: false,
       message: "email has been request reset password",
+    })
+  }
+  if (err?.message?.includes("voucher_invalid")) {
+    return res.status(400).json({
+      success: false,
+      message: "Error: Voucher is invalid",
+    })
+  }
+  if (err?.message?.includes("voucher_expired")) {
+    return res.status(400).json({
+      success: false,
+      message: "Error: Voucher is expired",
     })
   }
   if (err?.message?.includes("fileformat_error")) {
