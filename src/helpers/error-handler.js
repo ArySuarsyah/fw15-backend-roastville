@@ -31,6 +31,13 @@ export default function errorHandler(res, err) {
     })
   }
 
+  if (err?.message?.includes("Unauthorized")) {
+    return res.status(409).json({
+      success: false,
+      message: "Unauthorized",
+    })
+  }
+
   if (err?.message?.includes("auth_code_invalid")) {
     return res.status(400).json({
       success: false,
