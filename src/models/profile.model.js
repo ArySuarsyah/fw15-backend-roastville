@@ -68,9 +68,11 @@ export async function findOneByUserId(userId){
   "p"."gender",
   "p"."birthDate",
   "p"."createdAt",
-  "p"."updatedAt"
+  "p"."updatedAt",
+  "r"."code" AS "role"
   FROM "${table}" "p"
   JOIN "users" "u" ON "u"."id" = "p"."userId"
+  JOIN "role" "r" ON "r"."id" = "u"."roleId"
   WHERE "p"."userId"= $1
   `
 
