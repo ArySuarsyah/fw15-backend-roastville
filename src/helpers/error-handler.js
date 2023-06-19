@@ -37,6 +37,14 @@ export default function errorHandler(res, err) {
       message: "auth_code_invalid",
     })
   }
+
+  if (err?.message?.includes("Update_profile_failed")) {
+    return res.status(404).json({
+      success: false,
+      message: "File to large",
+    })
+  }
+
   if (err?.message?.includes("auth_no_forgot_request")) {
     return res.status(404).json({
       success: false,
