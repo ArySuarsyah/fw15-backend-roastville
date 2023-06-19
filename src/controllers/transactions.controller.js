@@ -23,31 +23,40 @@ export const makeTransaction = async (req, res) => {
       req.body.itemId,
       req.body.variant
     )
-    let index = 0
-    for (const qty of req.body.quantity) {
-      const quantity = parseInt(qty)
-      const product = products[index]
-      if (quantity > product.sku.quantity) {
+
+    req.body.variant.forEach((code, varIndex) => {
+      products.forEach((product, index) => {
+        if (product.sku.code === code) {
+          products[index].sku.reqQuantity = parseInt(
+            req.body.quantity[varIndex]
+          )
+        }
+      })
+    })
+
+    for (const product of products) {
+      if (product.sku.reqQuantity > product.sku.quantity) {
+        delete product.sku.reqQuantity
         return res.json({
           success: false,
-          message: `Quantity is only ${product.sku.quantity} left`,
+          message: `Item is only ${product.sku.quantity} left`,
           results: product,
         })
       }
-      products[index].sku.quantity = quantity
-      index++
     }
 
     const nanoid = customAlphabet("1234567890", 10)
     const invoiceNum = `INV/RV/${moment().format("DDMMYYYY")}/${nanoid()}`
 
     const items = products.map((item) => ({
+      id: item.id,
       name: item.name,
       picture: item.picture,
       price: item.sku.price,
-      total: item.sku.price * item.sku.quantity,
+      total: item.sku.price * item.sku.reqQuantity,
+      code: item.sku.code,
       variant: item.sku.name,
-      quantity: item.sku.quantity,
+      quantity: item.sku.reqQuantity,
     }))
 
     const total = items.reduce((prev, item) => prev + item.total, 0)
@@ -56,6 +65,18 @@ export const makeTransaction = async (req, res) => {
       total,
       items: JSON.stringify(items),
     })
+
+    const uQty = products.reduce((prev, item) => {
+      const calc = item.sku.quantity - item.sku.reqQuantity
+      prev.push(calc)
+      return prev
+    }, [])
+
+    let updateCount = 0
+    for (const item of items) {
+      await productModel.updateQty(item.id, item.code, uQty[updateCount])
+      updateCount++
+    }
 
     return res.json({
       success: true,
