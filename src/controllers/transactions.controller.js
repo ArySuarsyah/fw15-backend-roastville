@@ -2,6 +2,7 @@ import moment from "moment"
 import errorHandler from "../helpers/error-handler.js"
 import * as transactionModel from "../models/transactions.model.js"
 import * as productModel from "../models/products.model.js"
+import * as voucherModel from "../models/vouchers.model.js"
 import { customAlphabet } from "nanoid"
 
 export const getAll = async (req, res) => {
@@ -19,6 +20,21 @@ export const getAll = async (req, res) => {
 
 export const makeTransaction = async (req, res) => {
   try {
+    const { voucher } = req.body
+    let selectedVoucher
+    if (voucher) {
+      const checkVoucher = await voucherModel.findOneByCode(voucher)
+      if (!checkVoucher) {
+        throw Error("voucher_invalid")
+      }
+      const date = new Date()
+      const expired = new Date(checkVoucher.expiredIn)
+      if (date.getTime() > expired.getTime()) {
+        throw Error("voucher_expired")
+      }
+      selectedVoucher = checkVoucher
+    }
+
     const products = await productModel.findOneByIdAndVariant(
       req.body.itemId,
       req.body.variant
@@ -60,11 +76,22 @@ export const makeTransaction = async (req, res) => {
     }))
 
     const total = items.reduce((prev, item) => prev + item.total, 0)
-    const results = await transactionModel.insert({
+    const prepareData = {
       invoiceNum,
       total,
       items: JSON.stringify(items),
-    })
+    }
+
+    if (selectedVoucher) {
+      prepareData.voucherId = selectedVoucher.id
+      let discountPrice = prepareData.total * (selectedVoucher.percentage / 100)
+      if (discountPrice > parseFloat(selectedVoucher.maxAmount)) {
+        discountPrice = selectedVoucher.maxAmount
+      }
+      prepareData.total = prepareData.total - discountPrice
+    }
+
+    const results = await transactionModel.insert(prepareData)
 
     const uQty = products.reduce((prev, item) => {
       const calc = item.sku.quantity - item.sku.reqQuantity
