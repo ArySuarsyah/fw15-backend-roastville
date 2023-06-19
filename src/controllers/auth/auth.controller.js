@@ -45,10 +45,7 @@ export const Register = async function (req, res) {
     }
 
     await ProfileModel.InsertProfile(profileData)
-    const token = jwt.sign(
-      { id: user.id, roleId: customer },
-      process.env.APP_SECRET
-    )
+    const token = jwt.sign({ id: user.id, customer }, process.env.APP_SECRET)
     return res.json({
       success: true,
       message: "Register success",
