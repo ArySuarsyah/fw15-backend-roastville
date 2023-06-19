@@ -23,6 +23,14 @@ export default function errorHandler(res, err) {
       message: "auth_forgot_password_fail",
     })
   }
+
+  if (err?.message?.includes("auth_forgot_password_duplicate")) {
+    return res.status(409).json({
+      success: false,
+      message: "email already send request",
+    })
+  }
+
   if (err?.message?.includes("auth_code_invalid")) {
     return res.status(404).json({
       success: false,
