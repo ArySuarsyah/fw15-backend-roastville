@@ -1,6 +1,5 @@
 import jwt from "jsonwebtoken"
 import errorHandler from "../helpers/error-handler.js"
-import { findOneUsersByRole } from "../models/users.model.js"
 
 const APP_SECRET = process.env.APP_SECRET
 
@@ -12,9 +11,7 @@ export default async function authMiddleware(req, res, next) {
     }
 
     const token = auth.slice(7)
-    const jwtDecodeResult = jwt.verify(token, APP_SECRET)
-    const findOneReslut = await findOneUsersByRole(jwtDecodeResult.id)
-    req.user = findOneReslut
+    req.user = jwt.verify(token, APP_SECRET)
     return next()
   } catch (err) {
     return errorHandler(res, err)
