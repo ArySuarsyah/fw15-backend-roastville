@@ -43,6 +43,12 @@ export default function errorHandler(res, err) {
       message: "auth_no_forgot_request",
     })
   }
+  if (err?.message?.includes("forgot_request_email_key")) {
+    return res.status(404).json({
+      success: false,
+      message: "email has been request reset password",
+    })
+  }
   if (err?.message?.includes("fileformat_error")) {
     return res.status(400).json({
       success: false,
