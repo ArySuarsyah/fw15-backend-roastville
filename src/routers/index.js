@@ -10,6 +10,7 @@ import messageRouter from "./message.router.js"
 import usersRouter from "./user.router.js"
 import vouchersRouter from "./vouchers.router.js"
 import PaymentRouter from "../routers/paymentmethod.router.js"
+import HistoryRouter from "../routers/history.router.js"
 
 const router = Router()
 
@@ -23,6 +24,7 @@ router.use("/messages", authMiddleware, messageRouter)
 router.use("/users", authMiddleware, usersRouter)
 router.use("/vouchers", vouchersRouter)
 router.use("/paymentMethods", PaymentRouter)
+router.use("/history", authMiddleware, HistoryRouter)
 
 router.get("/", (req, res) => {
   return res.status(200).json({
