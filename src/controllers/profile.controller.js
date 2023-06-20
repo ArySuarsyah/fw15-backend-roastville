@@ -81,14 +81,14 @@ export const updateProfile = async function (req, res) {
       if (userById.picture) {
         // fileRemover({ filename: user.picture })
       }
-      const fileSizeInBytes = req.file.size
-      const fileSizeInMB = fileSizeInBytes / (1024 * 1024)
-      if (fileSizeInMB > limits) {
-        return res.status(400).json({
-          success: false,
-          message: "File is too large!",
-        })
-      }
+      // const fileSizeInBytes = req.file.size
+      // const fileSizeInMB = fileSizeInBytes / (1024 * 1024)
+      // if (fileSizeInMB > limits) {
+      //   return res.status(400).json({
+      //     success: false,
+      //     message: "File is too large!",
+      //   })
+      // }
       data.picture = req.file.path
     }
     await UsersModel.updateUsers(id, userData)

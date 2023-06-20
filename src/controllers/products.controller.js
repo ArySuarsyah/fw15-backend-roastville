@@ -34,7 +34,7 @@ export const createProduct = async function (req, res) {
 export const updateProduct = async function (req, res) {
   try {
     console.log(req.user)
-    if (req.user.role && req.user.role !== "superadmin") {
+    if (req.user.role !== 1) {
       throw Error(" only_admin_can_edit ")
     }
     const data = {
