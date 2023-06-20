@@ -3,6 +3,7 @@ import authRouter from "./auth/auth.router.js"
 import profileRouter from "./profile.router.js"
 import productRouter from "../routers/products.router.js"
 import transactionRouter from "../routers/transactions.router.js"
+import categoryRouter from "../routers/categories.router.js"
 import authMiddleware from "../middlewares/auth.middleware.js"
 import messageRouter from "./message.router.js"
 
@@ -12,6 +13,7 @@ router.use("/auth", authRouter)
 router.use("/profile", authMiddleware, profileRouter)
 router.use("/products", productRouter)
 router.use("/transactions", transactionRouter)
+router.use("/categories", categoryRouter)
 router.use("/messages", authMiddleware, messageRouter)
 
 router.get("/", (req, res) => {
