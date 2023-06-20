@@ -6,6 +6,7 @@ import authMiddleware from "../middlewares/auth.middleware.js"
 const ProductRouter = Router()
 
 ProductRouter.get("/", ProductController.getAll)
+ProductRouter.get("/:id",ProductController.findOneProduct)
 ProductRouter.post(
   "/",
   uploadMiddleware("picture"),
