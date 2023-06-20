@@ -91,8 +91,8 @@ export async function updateByUserId(userId, data) {
     "displayName" = COALESCE(NULLIF($3, ''), "displayName"),
     "firstName" = COALESCE(NULLIF($4, ''), "firstName"),
     "lastName" = COALESCE(NULLIF($5, ''), "lastName"),
-    "gender" = COALESCE(NULLIF(CASE WHEN $6 = '' THEN NULL ELSE $6::BOOLEAN END, "gender")),
-    "birthDate" = COALESCE(NULLIF(CASE WHEN $7 = '' THEN NULL ELSE $7::DATE END, "birthDate")),
+    "gender" = COALESCE(NULLIF($6::BOOLEAN, NULL), "gender"),
+    "birthDate" = COALESCE(NULLIF($7::DATE, NULL), "birthDate"),
     "address" = COALESCE(NULLIF($8, ''), "address")
     FROM "users" AS u
     WHERE p."userId" = $1 AND u."id" = p."userId"

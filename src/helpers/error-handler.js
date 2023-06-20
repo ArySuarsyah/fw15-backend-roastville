@@ -44,7 +44,23 @@ export default function errorHandler(res, err) {
       message: "auth_code_invalid",
     })
   }
+
+
+  if (err?.message?.includes("Update_profile_failed")) {
+    return res.status(404).json({
+      success: false,
+      message: "File to large",
+    })
+  }
+
+  if (err?.message?.includes("auth_no_forgot_request")) {
+ return res.status(404).json({
+      success: false,
+      message: "auth_no_forgot_request",
+    })
+  }
   if (err?.message?.includes("email_hasn't_forgot_request")) {
+
     return res.status(404).json({
       success: false,
       message: "Your Email is hasn't request forgot-password",
