@@ -12,7 +12,7 @@ export const getHistory = async (id) => {
 export const makeHistory = async (id, data) => {
   const query = `
     INSERT INTO "history" 
-    ("userId", "name", "price") 
+    ("userid", "name", "price") 
     VALUES ($1, $2, $3) RETURNING *
     `
 
