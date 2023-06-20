@@ -53,11 +53,11 @@ export const findOneByIdAndVariant = async (id, code) => {
 
 export const insert = async function (data) {
   const query = `
-  INSERT INTO ${table} ("picture", "name", "description", "variant")
-  VALUES ($1, $2, $3, $4) RETURNING *
+  INSERT INTO ${table} ("picture", "name", "description", "variant", "categoryId")
+  VALUES ($1, $2, $3, $4, $5) RETURNING *
   `
 
-  const values = [data.picture, data.name, data.description, data.variant]
+  const values = [data.picture, data.name, data.description, data.variant, data.categoryId]
   const { rows } = await db.query(query, values)
   return rows[0]
 }
