@@ -30,22 +30,24 @@ export default function errorHandler(res, err) {
       message: "email already send request",
     })
   }
-
+  if (err?.message?.includes("category_not_found")) {
+    return res.status(404).json({
+      success: false,
+      message: "Error: Category not found",
+    })
+  }
   if (err?.message?.includes("Unauthorized")) {
     return res.status(409).json({
       success: false,
       message: "Unauthorized",
     })
   }
-
   if (err?.message?.includes("auth_code_invalid")) {
     return res.status(400).json({
       success: false,
       message: "auth_code_invalid",
     })
   }
-
-
   if (err?.message?.includes("Update_profile_failed")) {
     return res.status(404).json({
       success: false,
