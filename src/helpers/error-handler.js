@@ -45,6 +45,7 @@ export default function errorHandler(res, err) {
     })
   }
 
+
   if (err?.message?.includes("Update_profile_failed")) {
     return res.status(404).json({
       success: false,
@@ -53,9 +54,22 @@ export default function errorHandler(res, err) {
   }
 
   if (err?.message?.includes("auth_no_forgot_request")) {
-    return res.status(404).json({
+ return res.status(404).json({
       success: false,
       message: "auth_no_forgot_request",
+    })
+  }
+  if (err?.message?.includes("email_hasn't_forgot_request")) {
+
+    return res.status(404).json({
+      success: false,
+      message: "Your Email is hasn't request forgot-password",
+    })
+  }
+  if (err?.message?.includes("email_hasn't_registed")) {
+    return res.status(404).json({
+      success: false,
+      message: "Your Email is hasn't be registed",
     })
   }
   if (err?.message?.includes("forgot_request_email_key")) {

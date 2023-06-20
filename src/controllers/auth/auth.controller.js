@@ -89,22 +89,25 @@ export const ResetPassword = async function (req, res) {
     const { email, newPassword, confirmPassword } = req.body
     const checkForgot = await ForgotRequest.findOneByEmail(email)
 
+    const userNoRegisted = await UsersModel.findOneUsersByEmail(email)
+
     if (newPassword !== confirmPassword) {
       throw Error("auth_password_not_match")
     }
-
+    if (!userNoRegisted) {
+      throw Error("email_hasn't_registed")
+    }
     if (!checkForgot) {
-      throw Error("auth_no_forgot_request")
+      throw Error("email_hasn't_forgot_request")
     }
 
     const selectedUser = await UsersModel.findOneUsersByEmail(email)
     const data = {
       password: await argon.hash(newPassword),
     }
-    const user = await UsersModel.updateUsers(selectedUser.id, data)
-    if (!user) {
-      throw Error("auth_no_forgot_request")
-    }
+
+    await UsersModel.updateUsers(selectedUser.id, data)
+
     await ForgotRequest.destroyForgotReq(email)
     return res.json({
       success: true,
