@@ -30,7 +30,12 @@ export default function errorHandler(res, err) {
       message: "email already send request",
     })
   }
-
+  if (err?.message?.includes("category_not_found")) {
+    return res.status(404).json({
+      success: false,
+      message: "Error: Category not found",
+    })
+  }
   if (err?.message?.includes("auth_code_invalid")) {
     return res.status(400).json({
       success: false,
