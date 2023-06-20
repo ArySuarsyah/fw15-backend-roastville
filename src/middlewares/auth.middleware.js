@@ -3,7 +3,7 @@ import errorHandler from "../helpers/error-handler.js"
 
 const APP_SECRET = process.env.APP_SECRET
 
-export default function authMiddleware(req, res, next) {
+export default async function authMiddleware(req, res, next) {
   try {
     const { authorization: auth } = req.headers
     if (!auth && !auth?.startsWith("Bearer ")) {

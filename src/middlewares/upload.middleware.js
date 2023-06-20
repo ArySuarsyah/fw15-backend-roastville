@@ -38,7 +38,7 @@ const limits = {
 }
 
 const fileFilter = (req, file, cb) => {
-  const formatFile = ["image/jpg", "image/jpeg"]
+  const formatFile = ["image/jpg", "image/jpeg", "image/png"]
   if (!formatFile.includes(file.mimetype)) {
     console.log(file.mimetype)
     cb(Error("fileformat_error"))
@@ -61,7 +61,10 @@ const uploadMiddleware = (field) => {
         }
         return next()
       } catch (err) {
-        return errorHandler(res, err)
+        return res.status(500).json({
+          success: false,
+          message: "Internal Server Error",
+        })
       }
     })
   }

@@ -31,9 +31,11 @@ export const Login = async function (req, res) {
 export const Register = async function (req, res) {
   try {
     const password = req.body.password
+    const customer = 2
     const hashedPassword = await argon.hash(password)
     const data = {
       ...req.body,
+      roleId: customer,
       password: hashedPassword,
     }
     const user = await UsersModel.insertUsers(data)
@@ -43,7 +45,7 @@ export const Register = async function (req, res) {
     }
 
     await ProfileModel.InsertProfile(profileData)
-    const token = jwt.sign({ id: user.id }, process.env.APP_SECRET)
+    const token = jwt.sign({ id: user.id, customer }, process.env.APP_SECRET)
     return res.json({
       success: true,
       message: "Register success",
@@ -58,14 +60,13 @@ export const ForgotPassword = async function (req, res) {
   try {
     const { email } = req.body
     const user = await UsersModel.findOneUsersByEmail(email)
-    
 
     if (!user) {
       throw Error("auth_no_user")
     }
 
-    const findForgotReset =  await ForgotRequest.findOneByEmail(email)
-    if(findForgotReset){
+    const findForgotReset = await ForgotRequest.findOneByEmail(email)
+    if (findForgotReset) {
       throw Error("auth_forgot_password_duplicate")
     }
 
@@ -88,22 +89,25 @@ export const ResetPassword = async function (req, res) {
     const { email, newPassword, confirmPassword } = req.body
     const checkForgot = await ForgotRequest.findOneByEmail(email)
 
+    const userNoRegisted = await UsersModel.findOneUsersByEmail(email)
+
     if (newPassword !== confirmPassword) {
       throw Error("auth_password_not_match")
     }
-
+    if (!userNoRegisted) {
+      throw Error("email_hasn't_registed")
+    }
     if (!checkForgot) {
-      throw Error("auth_no_forgot_request")
+      throw Error("email_hasn't_forgot_request")
     }
 
     const selectedUser = await UsersModel.findOneUsersByEmail(email)
     const data = {
       password: await argon.hash(newPassword),
     }
-    const user = await UsersModel.updateUsers(selectedUser.id, data)
-    if (!user) {
-      throw Error("auth_no_forgot_request")
-    }
+
+    await UsersModel.updateUsers(selectedUser.id, data)
+
     await ForgotRequest.destroyForgotReq(email)
     return res.json({
       success: true,

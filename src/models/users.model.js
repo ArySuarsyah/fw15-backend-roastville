@@ -20,8 +20,18 @@ export const findAllUsers = async function (page, limit, search, sort, sortBy) {
 
 export const findOneUsers = async function (id) {
   const query = `
-    SELECT * FROM "users" WHERE id=$1
+    SELECT "roleId" FROM "users" WHERE id=$1
     `
+
+  const values = [id]
+  const { rows } = await db.query(query, values)
+  return rows[0]
+}
+
+export const makeAdmin = async function (id) {
+  const query = `
+  UPDATE "users" SET "roleId" = 1 WHERE id = id;
+  `
 
   const values = [id]
   const { rows } = await db.query(query, values)

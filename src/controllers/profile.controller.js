@@ -1,6 +1,7 @@
 import * as ProfileModel from "../models/profile.model.js"
 import * as UsersModel from "../models/users.model.js"
 import errorHandler from "../helpers/error-handler.js"
+import { limits } from "argon2"
 
 export const getProfile = async function (req, res) {
   try {
@@ -79,6 +80,14 @@ export const updateProfile = async function (req, res) {
     if (req.file) {
       if (userById.picture) {
         // fileRemover({ filename: user.picture })
+      }
+      const fileSizeInBytes = req.file.size
+      const fileSizeInMB = fileSizeInBytes / (1024 * 1024)
+      if (fileSizeInMB > limits) {
+        return res.status(400).json({
+          success: false,
+          message: "File is too large!",
+        })
       }
       data.picture = req.file.path
     }

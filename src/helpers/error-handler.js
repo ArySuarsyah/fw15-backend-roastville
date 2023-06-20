@@ -36,16 +36,42 @@ export default function errorHandler(res, err) {
       message: "Error: Category not found",
     })
   }
+  if (err?.message?.includes("Unauthorized")) {
+    return res.status(409).json({
+      success: false,
+      message: "Unauthorized",
+    })
+  }
   if (err?.message?.includes("auth_code_invalid")) {
     return res.status(400).json({
       success: false,
       message: "auth_code_invalid",
     })
   }
-  if (err?.message?.includes("auth_no_forgot_request")) {
+  if (err?.message?.includes("Update_profile_failed")) {
     return res.status(404).json({
       success: false,
+      message: "File to large",
+    })
+  }
+
+  if (err?.message?.includes("auth_no_forgot_request")) {
+ return res.status(404).json({
+      success: false,
       message: "auth_no_forgot_request",
+    })
+  }
+  if (err?.message?.includes("email_hasn't_forgot_request")) {
+
+    return res.status(404).json({
+      success: false,
+      message: "Your Email is hasn't request forgot-password",
+    })
+  }
+  if (err?.message?.includes("email_hasn't_registed")) {
+    return res.status(404).json({
+      success: false,
+      message: "Your Email is hasn't be registed",
     })
   }
   if (err?.message?.includes("forgot_request_email_key")) {
