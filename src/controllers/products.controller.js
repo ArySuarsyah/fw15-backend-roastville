@@ -18,7 +18,7 @@ export const createProduct = async function (req, res) {
   try {
     const data = { ...req.body }
     if (req.file) {
-      data.picture = req.file.filename
+      data.picture = req.file.path
     }
     const product = await ProductModel.insert(data)
     return res.json({
@@ -39,18 +39,21 @@ export const updateProduct = async function (req, res) {
     }
     const data = {
       ...req.body,
-
     }
+    data.picture = req.file.path
+
     const product = await ProductModel.updateDetailProduct(req.params.id, data)
     if (product) {
       return res.json({
         success: true,
         message: "update_product_successfully! ",
-        results: product
+        results: product,
       })
     }
     throw Error("update_product_failed! ")
   } catch (err) {
+
+
     return errorHandler(res, err)
   }
 }
@@ -75,6 +78,7 @@ export const findOneProduct = async function (req, res) {
         })
       }
   } catch (err) {
+
     return errorHandler(res, err)
   }
 }
