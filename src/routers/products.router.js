@@ -12,7 +12,7 @@ ProductRouter.post(
   uploadMiddleware("picture"),
   ProductController.createProduct
 )
-ProductRouter.patch("/manage/:id", authMiddleware,
+ProductRouter.patch("/manage/:id", authMiddleware,uploadMiddleware("picture"),
   ProductController.updateProduct)
 
 export default ProductRouter
