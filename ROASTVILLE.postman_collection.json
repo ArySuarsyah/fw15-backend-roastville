@@ -559,6 +559,28 @@
 			]
 		},
 		{
+			"name": "VOUCHER",
+			"item": [
+				{
+					"name": "GET ALL VOUCHER",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/vouchers",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"vouchers"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "TEST CONNECTION",
 			"request": {
 				"method": "GET",
