@@ -2,7 +2,7 @@ import db from "../helpers/db.helper.js"
 
 export const getHistory = async (id) => {
   const query = `
-    SELECT * FROM "history" WHERE "userId" = $1
+    SELECT * FROM "history" WHERE "userid" = $1
     `
   const values = [id]
   const { rows } = await db.query(query, values)
