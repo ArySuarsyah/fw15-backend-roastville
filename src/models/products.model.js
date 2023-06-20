@@ -12,9 +12,22 @@ export const findAllProduct = async function () {
   return rows
 }
 
+
 export const findOne = async (id) => {
   const query = `
-  SELECT * FROM ${table} WHERE id=$1
+  SELECT 
+  pr.id AS "productId",
+  c.id AS "categoryId",
+  c.name AS "categoryName",
+  pr."name",
+  pr."picture",
+  pr."description",
+  pr."variant",
+  pr."createdAt",
+  pr."updatedAt"
+  FROM ${table} pr
+  JOIN "categories" c ON c.id = pr."categoryId"
+  WHERE pr."id"=$1
   `
   const values = [id]
   const { rows } = await db.query(query, values)

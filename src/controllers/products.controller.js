@@ -52,6 +52,33 @@ export const updateProduct = async function (req, res) {
     }
     throw Error("update_product_failed! ")
   } catch (err) {
+
+
+    return errorHandler(res, err)
+  }
+}
+
+
+export const findOneProduct = async function (req, res) {
+  try {
+    const {data} ={
+      ...req.body,
+    }
+    const product = await ProductModel.findOne(req.params.id, data)
+    if(product){
+      return res.json({
+        success: true,
+        message: "Get product detail",
+        results: product
+      })
+    }else{
+        return res.status(404).json({
+          success:false,
+          message:"not found"
+        })
+      }
+  } catch (err) {
+
     return errorHandler(res, err)
   }
 }

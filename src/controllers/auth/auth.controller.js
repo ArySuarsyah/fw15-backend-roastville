@@ -17,7 +17,7 @@ export const Login = async function (req, res) {
       throw Error("auth_wrong_password")
     }
 
-    const token = jwt.sign({ id: user.id }, process.env.APP_SECRET)
+    const token = jwt.sign({ id: user.id, role:user.roleId }, process.env.APP_SECRET)
     return res.json({
       success: true,
       message: "Login success!",
