@@ -488,6 +488,77 @@
 			]
 		},
 		{
+			"name": "CATEGORIES",
+			"item": [
+				{
+					"name": "GET ALL CATEGORIES",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/categories",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE CATEGORY",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "Add-on",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/categories",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "DELIVERY",
+			"item": [
+				{
+					"name": "GET ALL DELIVERY",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/delivery",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"delivery"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "TEST CONNECTION",
 			"request": {
 				"method": "GET",
