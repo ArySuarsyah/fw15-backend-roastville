@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "b512a6f4-6768-4c63-9f93-98b8804922a2",
+		"_postman_id": "438b3399-af7d-4f98-b5cb-ff43b8431029",
 		"name": "ROASTVILLE",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26558441"
 	},
 	"item": [
 		{
@@ -418,40 +419,41 @@
 								{
 									"key": "voucher",
 									"value": "FNPR15RG",
-									"type": "default"
+									"type": "default",
+									"disabled": true
 								},
 								{
 									"key": "itemId[]",
 									"value": "1",
-									"type": "default"
+									"type": "default",
+									"disabled": true
 								},
 								{
 									"key": "variant[]",
 									"value": "R",
-									"type": "default"
+									"type": "default",
+									"disabled": true
 								},
 								{
 									"key": "quantity[]",
 									"value": "1",
-									"type": "default"
+									"type": "default",
+									"disabled": true
 								},
 								{
 									"key": "itemId[]",
 									"value": "1",
-									"type": "default",
-									"disabled": true
+									"type": "default"
 								},
 								{
 									"key": "variant[]",
 									"value": "XL",
-									"type": "default",
-									"disabled": true
+									"type": "default"
 								},
 								{
 									"key": "quantity[]",
 									"value": "1",
-									"type": "default",
-									"disabled": true
+									"type": "default"
 								},
 								{
 									"key": "itemId[]",
@@ -573,6 +575,28 @@
 							],
 							"path": [
 								"vouchers"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "HISTORY",
+			"item": [
+				{
+					"name": "GET ALL HISTORY",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/history",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"history"
 							]
 						}
 					},
