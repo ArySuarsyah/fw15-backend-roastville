@@ -9,6 +9,7 @@ import authMiddleware from "../middlewares/auth.middleware.js"
 import messageRouter from "./message.router.js"
 import usersRouter from "./user.router.js"
 import vouchersRouter from "./vouchers.router.js"
+import PaymentRouter from "../routers/paymentmethod.router.js"
 
 const router = Router()
 
@@ -21,6 +22,7 @@ router.use("/delivery", deliveryRouter)
 router.use("/messages", authMiddleware, messageRouter)
 router.use("/users", authMiddleware, usersRouter)
 router.use("/vouchers", vouchersRouter)
+router.use("/paymentMethods", PaymentRouter)
 
 router.get("/", (req, res) => {
   return res.status(200).json({
