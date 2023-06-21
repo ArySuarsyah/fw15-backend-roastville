@@ -7,7 +7,8 @@ dotenv.config({
 })
 
 const db = new Pool({
-  connectionString: process.env.DATABASE,
+  connectionString:
+    "postgres://postgres:qBDVW7CdPWIo5ruO@db.xiwcnuyypffnuococzkk.supabase.co/postgres?schema=public",
 })
 
 db.connect()
