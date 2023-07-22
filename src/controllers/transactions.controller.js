@@ -21,7 +21,7 @@ export const getAll = async (req, res) => {
 export const getMyTransaction = async (req, res) => {
   const { id } = req.user
   try {
-    const transaction = await transactionModel.findAllByUserId(id)
+    const transaction = await transactionModel.findMyTransactions(id)
     return res.json({
       success: true,
       message: "Get all transactions successfully",
