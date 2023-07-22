@@ -11,6 +11,15 @@ export const findAll = async () => {
   return rows
 }
 
+export const findMyTransactions = async (id) => {
+  const query = `
+  SELECT * FROM ${table} WHERE "userId" = $1
+  `
+  const values = [id]
+  const { rows } = await db.query(query, values)
+  return rows
+}
+
 export const findAllByUserId = async (userId) => {
   const query = `
   SELECT 
