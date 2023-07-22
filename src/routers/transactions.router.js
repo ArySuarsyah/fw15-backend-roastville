@@ -4,6 +4,7 @@ import * as transactionController from "../controllers/transactions.controller.j
 const transactionRouter = Router()
 
 transactionRouter.get("/", transactionController.getAll)
+transactionRouter.get("/manage", transactionController.getMyTransaction)
 transactionRouter.post("/", transactionController.makeTransaction)
 
 export default transactionRouter

@@ -18,8 +18,23 @@ export const getAll = async (req, res) => {
   }
 }
 
+export const getMyTransaction = async (req, res) => {
+  const { id } = req.user
+  try {
+    const transaction = await transactionModel.findAllByUserId(id)
+    return res.json({
+      success: true,
+      message: "Get all transactions successfully",
+      results: transaction,
+    })
+  } catch (err) {
+    return errorHandler(res, err)
+  }
+}
+
 export const makeTransaction = async (req, res) => {
   try {
+    const { id } = req.user
     const { voucher } = req.body
     let selectedVoucher
     if (voucher) {
@@ -91,7 +106,7 @@ export const makeTransaction = async (req, res) => {
       prepareData.total = prepareData.total - discountPrice
     }
 
-    const results = await transactionModel.insert(prepareData)
+    const results = await transactionModel.insert(prepareData, id)
 
     const uQty = products.reduce((prev, item) => {
       const calc = item.sku.quantity - item.sku.reqQuantity

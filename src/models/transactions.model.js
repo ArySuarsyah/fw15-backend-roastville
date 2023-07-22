@@ -31,12 +31,12 @@ export const findAllByUserId = async (userId) => {
   return rows[0]
 }
 
-export const insert = async (data) => {
+export const insert = async (data, id) => {
   const query = `
-  INSERT INTO ${table} ("invoiceNum", "total", "items", "voucherId")
-  VALUES ($1, $2, $3, $4) RETURNING *
+  INSERT INTO ${table} ("invoiceNum", "total", "items", "voucherId", "userId")
+  VALUES ($1, $2, $3, $4, $5) RETURNING *
   `
-  const values = [data.invoiceNum, data.total, data.items, data.voucherId]
+  const values = [data.invoiceNum, data.total, data.items, data.voucherId, id]
   const { rows } = await db.query(query, values)
   return rows[0]
 }
