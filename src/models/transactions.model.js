@@ -23,16 +23,16 @@ export const findMyTransactions = async (id) => {
 export const findAllByUserId = async (userId) => {
   const query = `
   SELECT 
-  "products"."id" as "productId",
-  "users"."id" as "userId",
+  "products"."id" as "id",
+  "products"."picture" as "image",
   "products"."name",
-  "${table}"."createdAt",
-  "${table}"."updatedAt"
-  FROM "${table}" 
-  JOIN "products" ON "products"."id" = "${table}"."productId"
-  JOIN "users" ON "users"."id" = "${table}"."userId"
-  JOIN "transactionStatus" ON "transactionStatus"."id" = "${table}"."statusId"
-  JOIN "paymentMethods" ON "paymentMethods"."id" = "${table}"."paymentMethodId"
+  "transactionsStatus"."name" as "status",
+  "users"."id" as "userId"
+  FROM ${table} 
+  JOIN "products" ON "products"."id" = ${table}."productId"
+  JOIN "users" ON "users"."id" = ${table}."userId"
+  JOIN "transactionsStatus" ON "transactionsStatus"."id" = ${table}."statusId"
+  JOIN "paymentMethods" ON "paymentMethods"."id" = ${table}."paymentMethodId";
   WHERE "${table}"."userId"=$1
   `
   const values = [userId]
@@ -42,10 +42,20 @@ export const findAllByUserId = async (userId) => {
 
 export const insert = async (data, id) => {
   const query = `
-  INSERT INTO ${table} ("invoiceNum", "total", "items", "voucherId", "userId")
-  VALUES ($1, $2, $3, $4, $5) RETURNING *
+  INSERT INTO ${table} 
+  ("invoiceNum", "total", "items", "voucherId", "statusId", "paymentMethodId", "productId", "userId")
+  VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *
   `
-  const values = [data.invoiceNum, data.total, data.items, data.voucherId, id]
+  const values = [
+    data.invoiceNum,
+    data.total,
+    data.items,
+    data.voucherId,
+    data.statusId,
+    data.paymentMethodId,
+    data.productId,
+    id,
+  ]
   const { rows } = await db.query(query, values)
   return rows[0]
 }
