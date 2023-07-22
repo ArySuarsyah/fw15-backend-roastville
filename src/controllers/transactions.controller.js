@@ -90,11 +90,18 @@ export const makeTransaction = async (req, res) => {
       quantity: item.sku.reqQuantity,
     }))
 
+    const paymentMethodId = req.body.paymentMethodId
+    const productId = req.body.productId
+    const statusId = req.body.statusId
+
     const total = items.reduce((prev, item) => prev + item.total, 0)
     const prepareData = {
       invoiceNum,
       total,
       items: JSON.stringify(items),
+      paymentMethodId,
+      productId,
+      statusId,
     }
 
     if (selectedVoucher) {
