@@ -18,10 +18,12 @@ export const findAllByUserId = async (userId) => {
   item->>'name' AS name,
   (item->>'price')::integer AS price,
   item->>'picture' AS picture,
-  "ts"."name" AS "status"
+  "ts"."name" AS "status",
+  "pm"."name" AS "paymentMethod"
   FROM "transactions" "t"
+  JOIN "paymentMethods" "pm" ON "pm"."id" = "t"."paymentMethodId"
   JOIN "transactionsStatus" "ts" ON "t"."statusId" = "ts"."id", jsonb_array_elements(t.items) AS item
-  WHERE "t"."userId" = $1
+  WHERE "t"."userId" = $1;
   `
   const values = [userId]
   const { rows } = await db.query(query, values)
