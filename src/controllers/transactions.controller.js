@@ -99,7 +99,6 @@ export const makeTransaction = async (req, res) => {
       total,
       items: JSON.stringify(items),
       paymentMethodId,
-      productId,
       statusId,
     }
 
