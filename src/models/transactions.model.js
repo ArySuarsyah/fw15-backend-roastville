@@ -27,7 +27,7 @@ export const findAllByUserId = async (userId) => {
   `
   const values = [userId]
   const { rows } = await db.query(query, values)
-  return rows[0]
+  return rows
 }
 
 export const insert = async (data, id) => {
