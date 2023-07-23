@@ -91,7 +91,6 @@ export const makeTransaction = async (req, res) => {
     }))
 
     const paymentMethodId = req.body.paymentMethodId
-    const productId = req.body.productId
     const statusId = req.body.statusId
 
     const total = items.reduce((prev, item) => prev + item.total, 0)

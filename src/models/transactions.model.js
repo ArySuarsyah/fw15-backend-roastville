@@ -13,18 +13,15 @@ export const findAll = async () => {
 
 export const findAllByUserId = async (userId) => {
   const query = `
-  SELECT 
-  "products"."id" as "id",
-  "products"."picture" as "image",
-  "products"."name",
-  "transactionsStatus"."name" as "status",
-  "users"."id" as "userId"
-  FROM ${table} 
-  JOIN "products" ON "products"."id" = ${table}."productId"
-  JOIN "users" ON "users"."id" = ${table}."userId"
-  JOIN "transactionsStatus" ON "transactionsStatus"."id" = ${table}."statusId"
-  JOIN "paymentMethods" ON "paymentMethods"."id" = ${table}."paymentMethodId";
-  WHERE "${table}"."userId"=$1
+  SELECT
+  (item->>'id')::integer AS id,
+  item->>'name' AS name,
+  (item->>'price')::integer AS price,
+  item->>'picture' AS picture,
+  "ts"."name" AS "status"
+  FROM "transactions" "t"
+  JOIN "transactionsStatus" "ts" ON "t"."statusId" = "ts"."id", jsonb_array_elements(t.items) AS item
+  WHERE "t"."userId" = $1
   `
   const values = [userId]
   const { rows } = await db.query(query, values)
