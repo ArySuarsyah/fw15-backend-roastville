@@ -134,3 +134,18 @@ export const makeTransaction = async (req, res) => {
     return errorHandler(res, err)
   }
 }
+
+export const updateTransactions = async (req, res) => {
+  try {
+    const { transactionId } = req.body
+    const { id } = req.user
+    const data = await transactionModel.update(transactionId, id)
+    return res.json({
+      success: true,
+      message: "Update transactions successfully",
+      results: data,
+    })
+  } catch (err) {
+    return errorHandler(res, err)
+  }
+}
