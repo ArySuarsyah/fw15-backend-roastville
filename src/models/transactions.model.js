@@ -16,7 +16,7 @@ export const findAllByUserId = async (userId) => {
   SELECT
   (item->>'id')::integer AS id,
   item->>'name' AS name,
-  (item->>'price')::integer AS price,
+  "t"."total" AS price,
   item->>'picture' AS picture,
   "ts"."name" AS "status",
   "pm"."name" AS "paymentMethod"
@@ -45,6 +45,18 @@ export const insert = async (data, id) => {
     data.paymentMethodId,
     id,
   ]
+  const { rows } = await db.query(query, values)
+  return rows[0]
+}
+
+export const update = async (data, id) => {
+  const query = `
+  UPDATE ${table} 
+  SET "statusId" = 2 WHERE "id" = $1 AND "userId" = $2
+  RETURNING *
+  `
+
+  const values = [data, id]
   const { rows } = await db.query(query, values)
   return rows[0]
 }
