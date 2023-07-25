@@ -7,9 +7,11 @@ export const getAll = async function (req, res) {
       req.query.page,
       req.query.limit,
       req.query.search,
+      req.query.sort,
+      req.query.sortBy,
       req.query.category
     )
-    console.log(product)
+
     return res.json({
       success: true,
       message: "Get all products successfully",
