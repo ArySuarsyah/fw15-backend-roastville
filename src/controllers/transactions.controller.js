@@ -18,8 +18,23 @@ export const getAll = async (req, res) => {
   }
 }
 
+export const getMyTransaction = async (req, res) => {
+  const { id } = req.user
+  try {
+    const transaction = await transactionModel.findAllByUserId(id)
+    return res.json({
+      success: true,
+      message: "Get all transactions successfully",
+      results: transaction,
+    })
+  } catch (err) {
+    return errorHandler(res, err)
+  }
+}
+
 export const makeTransaction = async (req, res) => {
   try {
+    const { id } = req.user
     const { voucher } = req.body
     let selectedVoucher
     if (voucher) {
@@ -75,11 +90,16 @@ export const makeTransaction = async (req, res) => {
       quantity: item.sku.reqQuantity,
     }))
 
+    const paymentMethodId = req.body.paymentMethodId
+    const statusId = req.body.statusId
+
     const total = items.reduce((prev, item) => prev + item.total, 0)
     const prepareData = {
       invoiceNum,
       total,
       items: JSON.stringify(items),
+      paymentMethodId,
+      statusId,
     }
 
     if (selectedVoucher) {
@@ -91,7 +111,7 @@ export const makeTransaction = async (req, res) => {
       prepareData.total = prepareData.total - discountPrice
     }
 
-    const results = await transactionModel.insert(prepareData)
+    const results = await transactionModel.insert(prepareData, id)
 
     const uQty = products.reduce((prev, item) => {
       const calc = item.sku.quantity - item.sku.reqQuantity
@@ -109,6 +129,21 @@ export const makeTransaction = async (req, res) => {
       success: true,
       message: "Get all transactions successfully",
       results,
+    })
+  } catch (err) {
+    return errorHandler(res, err)
+  }
+}
+
+export const updateTransactions = async (req, res) => {
+  try {
+    const { transactionId } = req.body
+    const { id } = req.user
+    const data = await transactionModel.update(transactionId, id)
+    return res.json({
+      success: true,
+      message: "Update transactions successfully",
+      results: data,
     })
   } catch (err) {
     return errorHandler(res, err)

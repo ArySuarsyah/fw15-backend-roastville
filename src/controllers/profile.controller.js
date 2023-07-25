@@ -1,7 +1,6 @@
 import * as ProfileModel from "../models/profile.model.js"
 import * as UsersModel from "../models/users.model.js"
 import errorHandler from "../helpers/error-handler.js"
-import { limits } from "argon2"
 
 export const getProfile = async function (req, res) {
   try {

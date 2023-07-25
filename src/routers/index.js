@@ -10,21 +10,21 @@ import messageRouter from "./message.router.js"
 import usersRouter from "./user.router.js"
 import vouchersRouter from "./vouchers.router.js"
 import PaymentRouter from "../routers/paymentmethod.router.js"
-import HistoryRouter from "../routers/history.router.js"
+import CartRouter from "./cart.router.js"
 
 const router = Router()
 
 router.use("/auth", authRouter)
 router.use("/profile", authMiddleware, profileRouter)
 router.use("/products", productRouter)
-router.use("/transactions", transactionRouter)
+router.use("/transactions", authMiddleware, transactionRouter)
 router.use("/categories", categoryRouter)
 router.use("/delivery", deliveryRouter)
 router.use("/messages", authMiddleware, messageRouter)
 router.use("/users", authMiddleware, usersRouter)
 router.use("/vouchers", vouchersRouter)
 router.use("/paymentMethods", PaymentRouter)
-router.use("/history", authMiddleware, HistoryRouter)
+router.use("/cart", authMiddleware, CartRouter)
 
 router.get("/", (req, res) => {
   return res.status(200).json({

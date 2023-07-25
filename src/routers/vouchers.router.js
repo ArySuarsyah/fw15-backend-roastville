@@ -3,6 +3,8 @@ import * as voucherController from "../controllers/vouchers.controller.js"
 
 const voucherRouter = Router()
 
-voucherRouter.get("/", voucherController.getAll)
+voucherRouter.get("/all", voucherController.getAll)
+voucherRouter.get("/", voucherController.getVoucherByCode)
+voucherRouter.post("/", voucherController.insertVoucher)
 
 export default voucherRouter
