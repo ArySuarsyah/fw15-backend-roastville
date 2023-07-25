@@ -12,11 +12,11 @@ export const getCart = async () => {
 
 export const insertCart = async (data, id) => {
   const query = `
-  INSERT INTO ${table} ("name", "picture", "variant", "userId")
-  VALUES ($1, $2, $3, $4) RETURNING *
+  INSERT INTO ${table} ("productId", "userId")
+  VALUES ($1, $2) RETURNING *
   `
 
-  const values = [data.name, data.picture, data.variant, id]
+  const values = [data.productId, id]
   const { rows } = await db.query(query, values)
   return rows
 }
