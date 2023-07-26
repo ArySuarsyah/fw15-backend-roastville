@@ -2,16 +2,58 @@ import db from "../helpers/db.helper.js"
 
 const table = "products"
 
-export const findAllProduct = async function () {
+export const findAllProduct = async function (
+  page,
+  limit,
+  search,
+  sort,
+  sortBy,
+  category
+) {
+  page = parseInt(page) || 1
+  limit = parseInt(limit) || 8
+  sort = sort || "id"
+  sortBy = sortBy || "ASC"
+  search = search ? search.toLowerCase() : ""
+  category = category ? category.toLowerCase() : ""
+
+  const offset = (page - 1) * limit
+
+  const countQuery = `
+  SELECT COUNT(*)::INTEGER
+  FROM ${table}
+  WHERE "name" LIKE $1`
+
+  const countvalues = [`%${search}%`]
+  const { rows: countRows } = await db.query(countQuery, countvalues)
+
   const query = `
-  SELECT * FROM ${table}  
+  SELECT 
+  "pr"."id",
+  "c"."name",
+  "pr"."name" AS "name",
+  "pr"."picture",
+  "pr"."description",
+  "pr"."createdAt",
+  "pr"."updatedAt"
+  FROM ${table} AS "pr"
+  JOIN "categories" AS "c" ON "c"."id" = "pr"."categoryId"
+  WHERE LOWER("pr"."name") LIKE $3 AND LOWER("c"."name") LIKE $4
+  ORDER BY "pr"."${sort}" ${sortBy} LIMIT $1 OFFSET $2
   `
 
-  const values = []
+  const values = [limit, offset, `%${search}%`, `%${category}%`]
   const { rows } = await db.query(query, values)
-  return rows
+  return {
+    rows,
+    pageInfo: {
+      totalData: countRows[0].count,
+      page: page,
+      limit: limit,
+      totalPage: Math.ceil(countRows[0].count / limit),
+    },
+  }
 }
-
 
 export const findOne = async (id) => {
   const query = `
@@ -57,7 +99,13 @@ export const insert = async function (data) {
   VALUES ($1, $2, $3, $4, $5) RETURNING *
   `
 
-  const values = [data.picture, data.name, data.description, data.variant, data.categoryId]
+  const values = [
+    data.picture,
+    data.name,
+    data.description,
+    data.variant,
+    data.categoryId,
+  ]
   const { rows } = await db.query(query, values)
   return rows[0]
 }

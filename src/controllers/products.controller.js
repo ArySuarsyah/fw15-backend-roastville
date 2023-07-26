@@ -3,7 +3,15 @@ import errorHandler from "../helpers/error-handler.js"
 
 export const getAll = async function (req, res) {
   try {
-    const product = await ProductModel.findAllProduct()
+    const product = await ProductModel.findAllProduct(
+      req.query.page,
+      req.query.limit,
+      req.query.search,
+      req.query.sort,
+      req.query.sortBy,
+      req.query.category
+    )
+
     return res.json({
       success: true,
       message: "Get all products successfully",
@@ -52,33 +60,29 @@ export const updateProduct = async function (req, res) {
     }
     throw Error("update_product_failed! ")
   } catch (err) {
-
-
     return errorHandler(res, err)
   }
 }
 
-
 export const findOneProduct = async function (req, res) {
   try {
-    const {data} ={
+    const { data } = {
       ...req.body,
     }
     const product = await ProductModel.findOne(req.params.id, data)
-    if(product){
+    if (product) {
       return res.json({
         success: true,
         message: "Get product detail",
-        results: product
+        results: product,
       })
-    }else{
-        return res.status(404).json({
-          success:false,
-          message:"not found"
-        })
-      }
+    } else {
+      return res.status(404).json({
+        success: false,
+        message: "not found",
+      })
+    }
   } catch (err) {
-
     return errorHandler(res, err)
   }
 }
