@@ -22,7 +22,7 @@ export const findAllProduct = async function (
   const countQuery = `
   SELECT COUNT(*)::INTEGER
   FROM ${table}
-  WHERE "name" LIKE $1`
+  WHERE "name" ILIKE $1`
 
   const countvalues = [`%${search}%`]
   const { rows: countRows } = await db.query(countQuery, countvalues)
@@ -30,9 +30,9 @@ export const findAllProduct = async function (
   const query = `
   SELECT 
   "pr"."id",
-  "c"."name",
   "pr"."name" AS "name",
   "pr"."picture",
+  "pr"."variant",
   "pr"."description",
   "pr"."createdAt",
   "pr"."updatedAt"
